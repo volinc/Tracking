@@ -5,6 +5,11 @@ namespace Tracking.Droid.Services
 {
     public class ServiceConnectedEventArgs : EventArgs
     {
-        public IBinder Binder { get; set; }
+        public ServiceConnectedEventArgs(IBinder binder)
+        {
+            Binder = binder;
+        }
+
+        public IBinder Binder { get; }
     }
 }

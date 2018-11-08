@@ -61,9 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppService.cs" />
-    <Compile Include="Services\HybridService.cs" />
-    <Compile Include="Services\HybridServiceBinder.cs" />
-    <Compile Include="Services\HybridServiceConnection.cs" />
+    <Compile Include="Services\MyService.cs" />
+    <Compile Include="Services\MyServiceBinder.cs" />
+    <Compile Include="Services\MyServiceConnection.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

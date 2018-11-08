@@ -6,30 +6,30 @@ using Console = System.Console;
 namespace Tracking.Droid.Services
 {
     [Service(Exported = false, Enabled = true, Name = "com.myaki.TrackingService")]
-    public class HybridService : Service
+    public class MyService : Service
     {
         public override void OnCreate()
         {
-            Console.WriteLine($"{nameof(HybridService)}.{nameof(OnCreate)}");
+            Console.WriteLine("MyService.OnCreate");
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            Console.WriteLine($"{nameof(HybridService)}.{nameof(OnStartCommand)}");
+            Console.WriteLine("MyService.OnStartCommand");
 
             return StartCommandResult.Sticky;
         }
 
         public override IBinder OnBind(Intent intent)
         {
-            Console.WriteLine($"{nameof(HybridService)}.{nameof(OnBind)}");
+            Console.WriteLine("MyService.OnBind");
 
-            return new HybridServiceBinder(this);
+            return new MyServiceBinder(this);
         }
 
         public override void OnDestroy()
         {
-            Console.WriteLine($"{nameof(HybridService)}.{nameof(OnDestroy)}");
+            Console.WriteLine("MyService.OnDestroy");
 
             base.OnDestroy();
         }

@@ -23,26 +23,14 @@ namespace Tracking.Droid
 
         public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
         {
-            AppService.StartHybridService();
-
+            AppService.StartMyService();
             base.OnCreate(savedInstanceState, persistentState);
         }
-
-        protected override void OnNewIntent(Intent intent)
-        {
-            
-        }
-
-        protected override void OnSaveInstanceState(Bundle outState)
-        {
-            
-        }
-
+        
         protected override void OnDestroy()
         {
+            AppService.StopMyService();
             base.OnDestroy();
-
-            AppService.StopHybridService();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Console = System.Console;
@@ -6,7 +7,7 @@ using Console = System.Console;
 namespace Tracking.Droid.Services
 {
     [Service(Exported = false, Enabled = true, Name = "com.myaki.TrackingService")]
-    public class MyService : Service
+    public class MyService : Service, INativeService
     {
         public override void OnCreate()
         {
@@ -32,6 +33,16 @@ namespace Tracking.Droid.Services
             Console.WriteLine("MyService.OnDestroy");
 
             base.OnDestroy();
+        }
+
+        public void StartTracking(Action<string> locationChangedHandler)
+        {
+            
+        }
+
+        public void StopTracking()
+        {
+            
         }
     }
 }

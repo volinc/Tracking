@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Tracking
 {
@@ -12,6 +7,18 @@ namespace Tracking
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as MainViewModel)?.OnAppearing();
+            base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as MainViewModel)?.OnDisappearing();
+            base.OnDisappearing();
         }
     }
 }

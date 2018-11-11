@@ -1,6 +1,4 @@
-﻿using System;
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 
@@ -16,20 +14,22 @@ namespace Tracking.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
 
-            Console.WriteLine(AppService.Current);
+            appService = new AppService();
+            LoadApplication(new App(appService));
         }
+
+        private AppService appService;
 
         public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
         {
-            AppService.StartMyService();
+            appService.Start();
             base.OnCreate(savedInstanceState, persistentState);
         }
         
         protected override void OnDestroy()
         {
-            AppService.StopMyService();
+            appService.Stop();
             base.OnDestroy();
         }
     }

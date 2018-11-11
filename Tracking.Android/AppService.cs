@@ -7,70 +7,49 @@ using Tracking.Droid.Services;
 
 namespace Tracking.Droid
 {
-    public class AppService
+    public class AppService : IAppService
     {
-        protected static MyServiceConnection MyServiceConnection;
+        private readonly MyServiceConnection myServiceConnection;
+        private MyService myService;
 
-        static AppService()
+        public AppService()
         {
-            Current = new AppService();
-        }
-
-        protected AppService()
-        {
-            MyServiceConnection = new MyServiceConnection();
-            MyServiceConnection.ServiceConnected += (sender, e) => HybridServiceConnected?.Invoke(this, e);
-        }
-        
-        public static AppService Current { get; }
-
-        public MyService MyService
-        {
-            get
+            myServiceConnection = new MyServiceConnection();
+            myServiceConnection.ServiceConnected += (sender, e) =>
             {
-                if (MyServiceConnection.Binder == null)
-                    throw new Exception("Service not bound yet");
-
-                return MyServiceConnection.Binder.MyService;
-            }
+                myService = ((MyServiceBinder)e.Binder).MyService;
+                NativeServiceConnected?.Invoke(this, myService);
+            };
         }
-        
-        public event EventHandler<ServiceConnectedEventArgs> HybridServiceConnected;
 
-        public static void StartMyService()
+        public event EventHandler<INativeService> NativeServiceConnected;
+        
+        public void Start()
         {
             Task.Run(() =>
             {
+                var serviceIntent = new Intent(Application.Context, typeof(MyService));
+                
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-                {
-                    Console.WriteLine("Calling StartForegroundService");
-                    Application.Context.StartForegroundService(new Intent(Application.Context, typeof(MyService)));
-                }
+                    Application.Context.StartForegroundService(serviceIntent);
                 else
-                {
-                    Console.WriteLine("Calling StartService");
-                    Application.Context.StartService(new Intent(Application.Context, typeof(MyService)));
-                }
+                    Application.Context.StartService(serviceIntent);
                 
-                var locationServiceIntent = new Intent(Application.Context, typeof(MyService));
-                Console.WriteLine("Calling service binding");
-                
-                Application.Context.BindService(locationServiceIntent, MyServiceConnection, Bind.AutoCreate);
+                Application.Context.BindService(serviceIntent, myServiceConnection, Bind.AutoCreate);
             });
         }
 
-        public static void StopMyService()
+        public void Stop()
         {
-            if (MyServiceConnection != null)
+            if (myServiceConnection != null)
             {
-                Console.WriteLine("Unbinding from MyService");
-                Application.Context.UnbindService(MyServiceConnection);
-            }
+                Application.Context.UnbindService(myServiceConnection);
 
-            if (Current.MyService != null)
-            {
-                Console.WriteLine("Stopping the MyService");
-                Current.MyService.StopSelf();
+                if (myService != null)
+                {
+                    myService.StopTracking();
+                    myService.StopSelf();
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Tracking.Droid.Services
 
         public void OnServiceDisconnected(ComponentName name)
         {
-            Console.WriteLine($"{nameof(MyServiceConnection)}.{nameof(OnServiceDisconnected)}");
+            Console.WriteLine("MyServiceConnection.OnServiceDisconnected");
 
             Binder.IsBound = false;
         }
